@@ -1,0 +1,162 @@
+/* config. for sidebar */
+
+#showhide-sidebar-area {
+    background-color: DarkSlateBlue;
+    text-align: center;
+    cursor: pointer;
+    color: grey;
+}
+
+#showhide-sidebar-area:hover {
+    color: white;
+}
+
+#sidebar-area {
+    float: left;
+
+    position: fixed;
+
+    background: #1e1e1e;
+    color: grey;
+
+    padding: .5%;
+}
+#sidebar-area>strong {
+    color: white;
+}
+#scrollable-area {
+    float: right;
+}
+
+.listItem {
+    /*margin-left: 1.5em;
+    text-indent: -1.5em;*/
+    color: grey;
+}
+
+.listItem:hover {
+    color: white;
+    cursor: pointer;
+}
+
+/* These tags are dynamically added inside the listItem's by filter.js
+   to indicate selectedness, unseen lines, etc. */
+.activeFilter {
+    color: lightgrey;
+}
+
+.listItem>em {
+    color: red;
+}
+
+/* This has the clickable links to do stuff in it. */
+#controlLinkContainer {
+    margin-bottom: .7em;
+}
+/* This has checkboxes in it. */
+#checkboxContainer {
+    margin-bottom: .7em;
+}
+
+
+/* everything else */
+.filterContainer {
+    overflow: auto;
+    font-family: "Courier", "Lucida Console", Monaco, monospace;
+    font-size: 90%;  /* or small / medium */
+    background-color: black;
+    color: white;
+}
+
+#input-line {
+  width: 100%;
+  /*background-color: DarkSlateBlue;*/
+  background-color: #1f1f1f;
+  border-top: 5px solid black;
+/*  position: fixed; */
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+#input-field {
+  background: transparent;
+  color: White;
+  border-style: none;
+  width: 84%;
+}
+
+#submit-button {
+    width: 9%;
+    min-width: 2%;
+}
+
+#prev-button {
+    width: 5%;
+    min-width: 1%;
+}
+
+.muckRecvText {
+    white-space: pre;
+    word-wrap: break-word;
+    white-space: pre-wrap;       /* css-3 */
+
+    margin-left: 2.5em;
+    text-indent: -2.5em;
+}
+
+/* For text that's 'highlighted' by the client code: */
+.muckRecvText>em {
+    color: MediumSlateBlue;
+}
+
+
+
+/*
+   For the 'modal dialog' thingy
+ */
+#modal-overlay {
+    background: rgba(0, 0, 0, 0.7);
+
+    position: fixed;
+    width: 100%;
+    height: 100%;
+
+    z-index: 1001;
+}
+
+#edit-dialog {
+    width: 50%;
+    height: 50%;
+
+    margin-left: 25%;
+    margin-top: 10%;
+    padding: 15px;
+
+    background: #1e1e1e;   /* same as the sidebar */
+}
+#edit-dialog>textarea {
+    width: 100%;
+    height: 90%;
+
+    background: #0f0f0f;
+    color: white;
+}
+#edit-send {
+    float: left;
+    height: 10%;
+}
+#edit-cancel {
+    float: right;
+    height: 10%;
+}
+
+
+/* Fonts for input boxes; turn off glowy auras in (at least) Safari */
+textarea, input {
+    font-family: "Lucida Console", Monaco, monospace;
+    font-size: medium;
+    outline: none !important;
+}

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>MUCK client (beta)</title>
+
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Open all links in new tabs. -->
+        <base target="_blank" />
+
+        <!-- Style sheet. -->
+        <link rel="stylesheet" href="style.css" type="text/css"/>
+
+        <!-- Scripts.  Order matters. -->
+        <script type="text/javascript" src="Config.js"></script>
+
+        <script type="text/javascript" src="lib/ansi_up.min.js"></script>
+        <script type="text/javascript" src="lib/mousetrap.min.js"></script>
+
+        <script type="text/javascript" src="lib/TextgameProtocolClient.js"></script>
+        <!-- <script type="text/javascript" src="lib/DummyTextgameProtocolClient.js"></script> -->
+        <!-- <script type="text/javascript" src="gateway/TcpClient.js"></script> -->
+
+        <script type="text/javascript" src="script/GlobalFunctions.js"></script>
+        <script type="text/javascript" src="script/KeyboardBindings.js"></script>
+
+        <script type="text/javascript" src="script/MuckInterface.js"></script>
+
+        <script type="text/javascript" src="script/Sidebar.js"></script>
+
+        <script type="text/javascript" src="script/Commands.js"></script>
+
+        <script type="text/javascript" src="script/ModalEditDialog.js"></script>
+
+        <script type="text/javascript" src="script/Filters.js"></script>
+
+        <script type="text/javascript" src="script/LogFileCommands.js"></script>
+
+        <script type="text/javascript">
+
+            /* Send the 'greeting' lines:  put here because it has to be ran after other things have
+               set themselves up, and because there was no better place. */
+
+            window.LoadFunctions.push(function() {
+                var i;
+                for(i = 0; i < Config.greetingLines.length; i++) {
+                    MuckInterface.echo(Config.greetingLines[i], true);
+                }
+            });
+
+        </script>
+    </head>
+
+    <body style="background-color: black;">
+        <div id="modal-overlay">
+            <div id="edit-dialog">
+                <textarea id="edit-txt"></textarea>
+                <button id="edit-send">send</button>
+                <button id="edit-cancel">cancel</button>
+            </div>
+        </div>
+
+        <div id="showhide-sidebar-area">
+            ^^^ VVV
+        </div>
+        <div id="sidebar-area">
+            <div id="controlLinkContainer">
+            </div>
+
+            <div id="checkboxContainer">
+                <input type="checkbox" id="doNlInterp" checked=true/>
+                <label for="doNlInterp">Interpret {nl} in prop edits</label>
+
+                <br/>
+                <input type="checkbox" id="doChime"/>
+                <label for="doChime">Chime on new lines</label>
+            </div>
+
+            <strong>Filter by:</strong>
+        </div>
+
+        <div id="scrollable-area">
+            <div id="filters">
+            </div>
+
+            <div id="input-line">
+                <input id="input-field" onblur="return MuckInterface.lostFocus();" onfocus="return MuckInterface.gotFocus();" onKeyPress="return MuckInterface.submitEnter(this, event)" placeholder="Input Line" />
+                <button id="prev-button" onblur="return MuckInterface.lostFocus();" onfocus="return MuckInterface.gotFocus();" title="See last text sent to server, only when input line is empty" onClick="MuckInterface.upArrow();">Prev</button>
+                <button id="submit-button" onblur="return MuckInterface.lostFocus();" onfocus="return MuckInterface.gotFocus();" onClick="MuckInterface.submitText();" title="Sends text to server">Send</button>
+            </div>
+        </div>
+
+        <input type="file" id="fileSelectorElement" style="display: none"/>
+    </body>
+</html>
