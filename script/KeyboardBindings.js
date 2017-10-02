@@ -10,18 +10,41 @@
    Also useful to know: modern browsers no longer allow you to rebind certain keyboard
    shortcuts, such as those for 'new window' or 'print'. Great work, browsers! */
 
-/* Move between filters without reaching for a mouse each time. */
-Mousetrap.bindGlobal('ctrl+n', function(e) {
+var KeyboardBindings = new (function() {
+
+    var self = this;
+
+    this.keys = {};
+
+    this.key = function(key, callback) {
+        if(key.length !== 1) {
+            throw "Keys should be a single letter";
+        }
+
+        Mousetrap.bindGlobal('ctrl+' + key, callback);
+        Mousetrap.bindGlobal('alt+'  + key, callback);
+        return {
+            key: key,
+            does: function(what) {
+                self.keys[key] = what;
+            }
+        };
+    };
+
+}) () ;
+
+KeyboardBindings.key('n', function(e) {
     if(CurrentFilter.selectorElement.nextSibling &&
             CurrentFilter.selectorElement.nextSibling.childNodes[0] &&
             CurrentFilter.selectorElement.nextSibling.childNodes[0].onclick) {
+
         CurrentFilter.selectorElement.nextSibling.childNodes[0].onclick(e);
     }
 
     return false;       /* Tells Mousetrap to not let browser catch this key. */
-});
+}).does('Move to the next view');
 
-Mousetrap.bindGlobal('ctrl+p', function(e) {
+KeyboardBindings.key('p', function(e) {
     if(CurrentFilter.selectorElement.previousSibling &&
             CurrentFilter.selectorElement.previousSibling.childNodes[0] &&
             CurrentFilter.selectorElement.previousSibling.childNodes[0].onclick) {
@@ -29,11 +52,9 @@ Mousetrap.bindGlobal('ctrl+p', function(e) {
     }
 
     return false;
-});
+}).does('Move to the previous view');
 
-/* Close a filter from the keyboard. Also wants to move to the previous filter in
-   the list -- and has to not trigger click events on a non-extant close button. */
-Mousetrap.bindGlobal('ctrl+w', function(e) {
+KeyboardBindings.key('w', function(e) {
     var prev = false;
 
     if(CurrentFilter.selectorElement.previousSibling &&
@@ -48,39 +69,38 @@ Mousetrap.bindGlobal('ctrl+w', function(e) {
     }
 
     return false;
-});
+}).does('Close the current view');
 
-/* A cheap way to set custom prefixes, i.e. on a puppet filter that
-   can't detect what the prefix should be on it's own. */
-Mousetrap.bindGlobal('ctrl+l', function(e) {
+KeyboardBindings.key('l', function(e) {
     CurrentFilter.commandPrepend = document.getElementById("input-field").value;
     document.getElementById("input-field").value = "";
     MuckInterface.setInputHint(CurrentFilter.commandPrepend);
 
     return false;
-});
+}).does('Set filter prefix');
 
-/* Toggle the sidebar with the keyboard. */
-Mousetrap.bindGlobal('ctrl+o', function(e) {
+
+KeyboardBindings.key('o', function(e) {
     Sidebar.toggleVisibility();
 
     return false;
-});
+}).does('Toggle sidebar visibility');
 
-/* Clear whatever you're writing into the input history. */
-Mousetrap.bindGlobal('ctrl+k', function(e) {
+KeyboardBindings.key('k', function(e) {
     field = document.getElementById("input-field");
     MuckInterface.pushToHistory(field.value);
     field.value = "";
 
     return false;
-});
+}).does('Kill input to history');
 
-Mousetrap.bindGlobal('ctrl+u', function(e) {
+KeyboardBindings.key('u', function(e) {
     document.getElementById("input-field").value = "";
 
     return false;
-})
+}).does('Destroy input');
+
+
 
 /* C-m works like you would expect from tinyfugue. */
 Mousetrap.bindGlobal('ctrl+m', function(e) {
@@ -92,8 +112,8 @@ Mousetrap.bindGlobal('ctrl+m', function(e) {
 /* Properly bind arrow keys to history commands. */
 Mousetrap.bindGlobal('up', function(e) {
     MuckInterface.upArrow();
-})
+});
 
 Mousetrap.bindGlobal('down', function(e) {
     MuckInterface.downArrow();
-})
+});
