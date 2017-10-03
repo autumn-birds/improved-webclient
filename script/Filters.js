@@ -258,7 +258,7 @@ var FilterManager = new (function() {
 
         /* Otherwise we end up on the very beginning when going to a place with more text, or
            something? */
-        window.scrollTo(0, document.body.scrollHeight);
+        MuckInterface.scrollToEnd();
 
         /* Make the input line grab focus, too. */
         document.getElementById("input-field").focus();
@@ -312,7 +312,7 @@ var FilterManager = new (function() {
 
             /* Scroll the page down if this line is actually in view. */
             if (CurrentFilter.catches(textOf(elem))) {
-                window.scrollTo(0, document.body.scrollHeight);
+                MuckInterface.scrollToEnd();
             }
 
             return true;

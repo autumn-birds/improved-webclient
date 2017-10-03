@@ -121,6 +121,13 @@ var MuckInterface = new (function() {
         intervalID = window.setInterval(sendOneLine, Config.sendLineDelayMs);   /* Should give about 10 lines/sec ... well, ok, 100 */
     };
 
+    /* Scroll down to the bottom of the window.
+       Chrome broke our use of `body.scrollHeight` somewhere around v61. So we use
+       the current filter's lineContainerElement instead. */
+    this.scrollToEnd               = function() {
+        window.scrollTo(0, CurrentFilter.lineContainerElement.scrollHeight);
+    };
+
     /* Public-facing 'hooks';
        fairly self explanatory; will be called, in order, on the associated line of text.
        OnPlayerText() calls get to mutate the thing they're given; they should return the
