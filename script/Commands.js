@@ -118,3 +118,15 @@ var CommandManager = new (function() {
     });
 
 }) () ;
+
+window.LoadFunctions.push(function() {
+    CommandManager.register(new Command("reconnect", function() {
+        MuckInterface.stopConnection();
+        /* Give things time to clean up. */
+        setTimeout(function() {
+            MuckInterface.startConnection();
+        }, 1000);
+    }).understand("rc")
+      .explain("Re-connect.")
+      .click("reconnect"));
+});

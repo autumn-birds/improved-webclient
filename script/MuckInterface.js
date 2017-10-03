@@ -1,6 +1,8 @@
 
 var MuckInterface = new (function() {
 
+    var self = this;
+
     /* This thing governs both the user-interface used for interacting with the MUCK and the
        client's interaction with the MUCK server / websocket gateway / whatever. Which is to
        say, it's mostly just the scripting that was originally in index.html, though one of
@@ -128,6 +130,62 @@ var MuckInterface = new (function() {
         window.scrollTo(0, CurrentFilter.lineContainerElement.scrollHeight);
     };
 
+    // Starts the connection when the page has loaded.
+    //
+    this.startConnection = function() {
+        connection = new TextgameProtocolClient();
+
+        connection.onConnectionEstablished = function() {
+            addText('--- CONNECTED', true);
+        };
+
+        connection.onDisconnection = function() {
+            addText('--- DISCONNECTED', true);
+        };
+
+        connection.onLostConnection = function() {
+            addText('--- Temporarily lost connection.  Attempting to reconnect...', true);
+        };
+
+        connection.onError = function(error) {
+            addText('--- ERROR: ' + error, true);
+        }
+
+        connection.onReceivedTextLine = function(e) {
+            if (e.indexOf(editPrefix) === 0) {
+                // Found an edit line to put in the input line.  If they somehow
+                // had something entered, save it off just in case that is more
+                // important to them.
+                //
+                var line = e.slice(editPrefix.length);
+                var inputText = document.getElementById("input-field");
+
+                if (inputText.value.length > 0) {
+                    lastLine = inputText.value;
+                }
+
+                inputText.value = line;
+            } else {
+                addText(e);
+            }
+        }
+
+        connection.connect(Config.gateway);
+
+        // Tries to stop the connection when the page is closed / navigated away
+        //
+        window.onunload = function() {
+            connection.disconnect();
+        };
+    };
+
+    window.LoadFunctions.push(this.startConnection);
+
+    this.stopConnection = function() {
+        connection.disconnect();
+        connection = undefined;
+    };
+
     /* Public-facing 'hooks';
        fairly self explanatory; will be called, in order, on the associated line of text.
        OnPlayerText() calls get to mutate the thing they're given; they should return the
@@ -142,7 +200,7 @@ var MuckInterface = new (function() {
 
     /* Not-public-facing things / internal logic. */
 
-    var connection = new TextgameProtocolClient();
+    var connection;
     var lastLines = [ ];
     var llPos = -1;       /* How far into lastLines (cmd history) has the player gone?) */
     var origTitle = document.title;
@@ -353,54 +411,6 @@ var MuckInterface = new (function() {
         document.title = origTitle;
 
         return true;
-    }
-
-    // Starts the connection when the page has loaded.
-    //
-    window.LoadFunctions.push(function() {
-
-        connection.onConnectionEstablished = function() {
-            addText('--- CONNECTED', true);
-        };
-
-        connection.onDisconnection = function() {
-            addText('--- DISCONNECTED', true);
-        };
-
-        connection.onLostConnection = function() {
-            addText('--- Temporarily lost connection.  Attempting to reconnect...', true);
-        };
-
-        connection.onError = function(error) {
-            addText('--- ERROR: ' + error, true);
-        }
-
-        connection.onReceivedTextLine = function(e) {
-            if (e.indexOf(editPrefix) === 0) {
-                // Found an edit line to put in the input line.  If they somehow
-                // had something entered, save it off just in case that is more
-                // important to them.
-                //
-                var line = e.slice(editPrefix.length);
-                var inputText = document.getElementById("input-field");
-
-                if (inputText.value.length > 0) {
-                    lastLine = inputText.value;
-                }
-
-                inputText.value = line;
-            } else {
-                addText(e);
-            }
-        }
-
-        connection.connect(Config.gateway);
-    });
-
-    // Tries to stop the connection when the page is closed / navigated away
-    //
-    window.onunload = function(){
-        connection.disconnect();
     }
 
 }) () ;
