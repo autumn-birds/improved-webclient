@@ -102,6 +102,12 @@
     white-space: pre;
     word-wrap: break-word;
     white-space: pre-wrap;       /* css-3 */
+    
+    /* Why someone would build 'fi', 'fl', etc., ligatures into a monospace font,
+     * I don't know.  But apparently someone did.  Don't let them do that; it's 
+     * ugly.
+     */
+    font-variant-ligatures: none;
 
     margin-left: 2.5em;
     text-indent: -2.5em;
