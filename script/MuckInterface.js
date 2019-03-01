@@ -26,7 +26,7 @@ var MuckInterface = new (function() {
     };
 
     this.pushToHistory              = function(txt) {
-        /* We might as well avoid adding runs of duplicate lines to the history. */
+        /* We might as well avoid adding runs of duplicate lines to the command history. */
         if(lastLines[lastLines.length - 1] != txt) {
             lastLines.push(txt);
             return true;
@@ -120,7 +120,7 @@ var MuckInterface = new (function() {
             }
         }
 
-        intervalID = window.setInterval(sendOneLine, Config.sendLineDelayMs);   /* Should give about 10 lines/sec ... well, ok, 100 */
+        intervalID = window.setInterval(sendOneLine, Config.sendLineDelayMs);
     };
 
     /* Scroll down to the bottom of the window.
@@ -275,7 +275,7 @@ var MuckInterface = new (function() {
                    instead. */
                 setTimeout(function() {
                     /* http://stackoverflow.com/questions/9419263/playing-audio-with-javascript#18628124 */
-                    var audio = new Audio("169854__gnotesoundz__wind-chime-crunch.wav");
+                    var audio = new Audio(Config.chimeSoundFile);
                     audio.play();
                 }, 10);
             }

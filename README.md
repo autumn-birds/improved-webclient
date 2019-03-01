@@ -1,23 +1,25 @@
 
 # About
 
-An improved web client for an esoteric, idiosyncratic chat system. It is written in plain vanilla Javascript and has made little or no effort to follow anyone's idea of best practices. You're welcome.
+An "improved" web client.  This mostly means it includes some extra features that make it nicer for more serious use, including a clever system to filter page conversations and text from puppets into their own streams.
 
-# Contributing
+# Configuration
 
-Don't bother.
+Edit `Config.js` to match your needs.
 
-(Alternatively, if you really, *really* must, you could try telling me about your idea. Maybe we can work something out.)
+# Possible fixes/improvements
 
-# License
+There are some things that would be nice to have that I never got around to doing.
 
-All the files in this repository are copyright &copy; their respective authors.
+- Stop the client from jumping back to the bottom on new input if the user's scrolled up more than a little bit.
+- Turn off the filter for whispered messages, which tend to be context dependent and are more annoying than helpful to differentiate from their context a lot of the time.
+- Make it so the text in the input line is unique to each filter/view.  This would probably prevent a lot of accidental sending to the wrong place.
 
 # Credits
 
-This software is merely a user-interface improvement for infrastructure that is the work of clever and knowledgeable people who are definitely not me. Without their work to build upon, it probably would not exist, and certainly would not exist in this form.
-
-It also relies upon a couple of third-party Javascript libraries:
+As well as the work of clever and knowledgeable people who made the websocket backend this UI connects to and the original client it's based on, the following libraries are used:
 
 * [Mousetrap](https://craig.is/killing/mice) for keyboard bindings
 * [ansi\_up](https://github.com/drudru/ansi_up) to process ANSI escape sequences into HTML
+
+The 'chime' sound included to notify users of new activity is ['wind chime crunch' by GnoteSoundz on freesound](https://freesound.org/people/GnoteSoundz/sounds/169854/).  It was released under the CC0 license, effectively dedicating it to the public domain.  If you want to use a different sound you can change the filename in `Config.js`.

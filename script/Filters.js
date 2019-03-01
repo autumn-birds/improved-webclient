@@ -30,16 +30,16 @@ var FilterManager = new (function() {
            specify that when constructing one. Note the check specifically for 'false', as just testing for
            non-truthiness would make it unclosable by default if the argument is left off. */
         if(closable !== false) {
-            this.closable               = true;
+            this.closable           = true;
         } else {
-            this.closable               = false;
+            this.closable           = false;
         }
 
         this.progenitor             = null;
 
         /* A DOM element that stores all the lines matched by the filter: switching which DOM elements
-           are visible is (theoretically) faster than recomputing everything each time, once you begin to
-           have a great many lines. */
+           are visible is faster than recomputing everything each time, once you begin to have a great
+           many lines. */
         this.lineContainerElement   = elem("div", null, "filterContainer");
         MuckInterface.addFilterBody(this.lineContainerElement);
         this.lineContainerElement.style.display = "none";
@@ -156,7 +156,7 @@ var FilterManager = new (function() {
        and lines like it.  (For instance, any one 'page' filter only matches a particular set of
        names in the 'page'.)  If their filter doesn't apply to the line they should return null.
 
-       Filter name is very important and usually includes some dynamic element; if you have no name,
+       Filter name is important and usually includes some dynamic element; if you have no name,
        the user won't be able to select your filter at all.
 
        The inner, callback function must return the part of the line the filter matched, if there is
@@ -169,7 +169,7 @@ var FilterManager = new (function() {
     FilterList                      = [];
 
     /* Global var.;
-       remembers what filter the user's most recently selected. */
+       remembers what filter the user most recently selected. */
     CurrentFilter                   = null;
 
     /* Global var.;
@@ -182,10 +182,6 @@ var FilterManager = new (function() {
 
        On a filter match recursively diagnoses what the filter filtered out and if anything wants
        to make a filter out of it, adds that as a sub-filter.
-
-       ...another question: SHOULD we offer EVERY filter type the chance to create a filter on this
-       line?  Notice here that the returning if it already matches a filter is to keep from creating
-       the same filter over and over......   So far, this hasn't seemed necessary.
 
        Return true if anything at all matched, or false otherwise. */
     function diagnoseLine(line, parentFilter, el) {
@@ -335,7 +331,9 @@ var FilterManager = new (function() {
 
     /**************************************************************************************
      **************************************************************************************
-     * Now we get to the 'filters' themselves... */
+     * Now we get to the 'filters' themselves...                                          *
+     **************************************************************************************
+     **************************************************************************************/
 
     /* Filter prototype(r) - puppets;
        catches and then filters I/O from a puppet. Ret.: filter object if line is from a puppet, or
@@ -361,11 +359,8 @@ var FilterManager = new (function() {
     /* Filter prototype(r) - pages;
        this is going to get complicated, probably.
 
-       Later on:  The page filters need to be revisited if they're going to work for people
-       who don't have my custom page set-up which makes things more regular/predictable as a
-       side effect.  For one thing, they may have a curious little problem when a "'s", for
-       instance, in a page-pose, or a comma trailing the name, or etc., happens -- they'll
-       think it's a new player... */
+       Unfortunately I probably haven't tested the default page messages as thoroughly because
+       I customised mine.  But I don't remember getting any serious complaints. */
     Filter.getPagers = function(line) {
         var result, i;
 
@@ -386,7 +381,7 @@ var FilterManager = new (function() {
            is very plausible. More testing is needed. There might be similar things elsewhere? I don't
            know.
 
-            ... though I was able to make the first group non-greedy and thus solve the problem (I think.) */
+           I was able to make the first group non-greedy and thus solve the problem (I think.) */
         } else if(match = line.match(/^In a page-pose to (.+?) and you, ([^ ]+) (.+)/)) {
             result = match[1] +" "+ match[2];
 
@@ -461,8 +456,6 @@ var FilterManager = new (function() {
 
             for(i = 0; i < namesToPage.length; i++) {
                 if(match = namesToPage[i].match(/^(.*)\(Z\)\[([^\]]+)\]$/)) {
-                    /* It's a puppet, which have info's about the player owning; this is fine and even desirable
-                       when just displaying the name, but not when composing a 'page' command. */
                     namesToPage[i] = match[1];
                 }
             }
@@ -483,7 +476,10 @@ var FilterManager = new (function() {
     });
 
     /* Filter protoype(r) - whispers;
-       hopefully simpler than pages. */
+       hopefully simpler than pages.
+
+       This actually annoys me in practice and I would probably turn it off since whisper
+       messages are usually a lot more context dependent on what was happening around them. */
     Filter.getWhisperers = function(line) {
         var result;
         var match;
@@ -536,8 +532,8 @@ var FilterManager = new (function() {
     /* Filter prototype(r) - 'com' channels;
        finally, something easy!  (Well, kind of.)   (Okay, that wasn't *that* easy.)
 
-       There was a really weird bug here where the filter would break on Tash-Ki'ira's name ...
-       it's gone now, I still have no idea what caused it. */
+       There was a really weird bug here where the filter would break on a player with
+       an apostrophe in her name ... it's gone now, I still have no idea what caused it. */
     FilterList.push(function(line) {
         var match = line.match(/^Com \[(.+?)\] ([^\s]+) says: <(.+)>/);
 

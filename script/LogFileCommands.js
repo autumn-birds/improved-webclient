@@ -2,7 +2,7 @@
 /* LogFileCommands.js
 
    Code that deals with offering a log for download and with writing a text file
-   to the server (which could be called an upload, I suppose, technically.) */
+   to the server. */
 
 window.LoadFunctions.push(function() {
     /* Command to save a log. */
@@ -22,7 +22,7 @@ window.LoadFunctions.push(function() {
         }
     }).understand("log")
       .explain("Attempts to offer a text file with all text seen in the current output window thus far "+
-               "for download. You can specify the filename.")
+               "for download. You can specify the filename as an optional parameter to this command.")
       .click("save log"));
 
 
@@ -49,11 +49,11 @@ window.LoadFunctions.push(function() {
             }
         };
 
-        /* ... and this turns out just to need to fire off the hidden selectorelement. */
+        /* ... and this turns out just to need to fire off the hidden selector element. */
         CommandManager.register(new Command("putFile", function(arg) {
             selector.click();
         }).understand("put")
-          .explain("Asks the user for a file to upload. Make sure it's a text file. The file is broken into lines "+
+          .explain("Asks for a file to upload. Make sure it's a text file. The file is broken into lines "+
                    "and sent to the server line by line. The client will insert spaces in any otherwise blank lines "+
                    "to ensure they register.")
           .click("send textfile") );

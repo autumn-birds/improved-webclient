@@ -6,9 +6,12 @@
    Useful to know: if one of these functions FAILS, i.e. encounters some sort of exception
    and so stops working, the key will pass through to the browser, as the function doesn't
    get a chance to return 'false'.
-   
+
    Also useful to know: modern browsers no longer allow you to rebind certain keyboard
-   shortcuts, such as those for 'new window' or 'print'. Great work, browsers! */
+   shortcuts, such as those for 'new window' or 'print'. Great work, browsers!
+
+   C-n and C-p still work on OS X systems since the "real" shortcuts are under Cmd there,
+   so we didn't take out the Ctrl+... bindings. */
 
 var KeyboardBindings = new (function() {
 

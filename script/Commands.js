@@ -27,10 +27,10 @@ function Command(name, fn) {
         return this;
     };
 
-    /* Add an element to allow this command to be called graphically, optionally
-       prompting for arguments --pass the prompt in the second parameter. */
     var self = this;
 
+    /* Add an element to allow this command to be called graphically, optionally
+       prompting for arguments (pass the prompt in the second parameter.) */
     this.click                  = function(text, askForArgument, defArg) {
         /* This should, probably, really work before the 'Sidebar' part is loaded. But...
                 oh well. */
