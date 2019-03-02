@@ -9,11 +9,11 @@ Edit `Config.js` to match your needs.
 
 # Possible fixes/improvements
 
-There are some things that would be nice to have that I never got around to doing.
+There are some things that would be nice to have that I never (yet) got around to doing.
 
 - Stop the client from jumping back to the bottom on new input if the user's scrolled up more than a little bit.
 - Turn off the filter for whispered messages, which tend to be context dependent and are more annoying than helpful to differentiate from their context a lot of the time.
-- Make it so the text in the input line is unique to each filter/view.  This would probably prevent a lot of accidental sending to the wrong place.
+- Make the text in the input line unique to each filter/view.  This would probably prevent a lot of accidental sending to the wrong place.
 
 # Credits
 
